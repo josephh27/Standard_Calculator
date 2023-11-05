@@ -94,13 +94,21 @@ class Calculator {
         this.operator = ""
         this.refreshScreen = true;
         if (parseFloat(this.currentOperand) > 0) {
-            this.displayToScreen(parseFloat(this.currentOperand).toString(2));
+            if (parseFloat(this.currentOperand).toString(2).length > 12) {
+                this.displayToScreen("ERROR");
+            } else {
+                this.displayToScreen(parseFloat(this.currentOperand).toString(2));
+            }
         } else {
             this.currentOperand = ((Math.abs(this.currentOperand)).toString(2)).replace(/[01]/g, function (match) {
                 return match === "0" ? "1" : "0";
             });
             
-            this.displayToScreen((parseFloat(this.currentOperand, 2) + 1).toString(2));
+            if ((parseFloat(this.currentOperand, 2) + 1).toString(2).length > 12) {
+                this.displayToScreen("ERROR");
+            } else {
+                this.displayToScreen((parseFloat(this.currentOperand, 2) + 1).toString(2));
+            }
         }
         this.currentOperand = "";
         this.previousOperand = "";
