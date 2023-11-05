@@ -8,7 +8,8 @@ const backspaceButton = document.querySelector('.backspace');
 const memoryPlus = document.querySelector('.memory-plus');
 const memoryMinus = document.querySelector('.memory-minus');
 const memoryRecallClear = document.querySelector('.memory-recall-clear');
-const binaryButton = document.querySelector('.binary');;
+const binaryButton = document.querySelector('.binary');
+const decimalButton = document.querySelector('.dec');
 
 class Calculator {
     constructor(previousOperand, currentOperand) {
@@ -19,6 +20,7 @@ class Calculator {
         this.operatorClicked = false;
         this.memoryValue = 0;
         this.refreshScreen = false;
+        this.fromBinary = false;
     }
 
     addToScreen(number) {
@@ -67,12 +69,14 @@ class Calculator {
     }
 
     memoryAddition() {
+        if (this.currentOperand === "" || !parseFloat(this.currentOperand)) return;
         this.calculate();
         this.memoryValue = parseFloat(this.memoryValue) + parseFloat(this.currentOperand);
         this.refreshScreen = true;
     }
 
     memorySubtraction() {
+        if (this.currentOperand === "" || !parseFloat(this.currentOperand)) return;
         this.calculate();
         this.memoryValue = parseFloat(this.memoryValue) - parseFloat(this.currentOperand);
         this.refreshScreen = true;
@@ -100,6 +104,16 @@ class Calculator {
         }
         this.currentOperand = "";
         this.previousOperand = "";
+        this.fromBinary = true;
+    }
+
+    decimalConvert() {
+        let screenValue = calculatorScreen.innerText;
+        let parsedValue = parseInt(screenValue, 2);
+        if (Number.isNaN(parsedValue)) return;
+        this.currentOperand = parsedValue;
+        this.refreshScreen = false;
+        this.displayToScreen(this.currentOperand);
     }
 
     backspace() {
@@ -166,6 +180,7 @@ memoryPlus.addEventListener('click', () => calculator.memoryAddition());
 memoryMinus.addEventListener('click', () => calculator.memorySubtraction());
 memoryRecallClear.addEventListener('click', () => calculator.memoryRecallClear());
 binaryButton.addEventListener('click',  () => calculator.binaryConvert())
+decimalButton.addEventListener('click',  () => calculator.decimalConvert())
 
 function convertToScientificNotation(numberString) {
     const number = parseFloat(numberString);
